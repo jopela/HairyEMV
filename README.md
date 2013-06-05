@@ -1,4 +1,5 @@
-Hairy-IAC
+Hairy-xIAC
 =========
 
-Takes IAC decline, online and default and print them in a human readable form
+Takes xIAC decline, online and default and print them in a human readable
+format.
