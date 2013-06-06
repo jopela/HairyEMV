@@ -14,7 +14,7 @@ card involved in the current transaction. IACs values are read from a
 card and usually presented as hexadecimal-coded integer. Typical values for
 IACs tag set (Denial, Online, Default) could be 0000000000, BC70BC9800 and 
 BC50BC8800. This is a valid representation for IAC values but since each bit
-of the 5 bytes value as a particular meaning, it is more common to "unroll"
+of the 5 bytes value has a particular meaning, it is more common to "unroll"
 them and to print to corresponding bit of each IAC tag next to each other. For
 the values of the IAC tags shown above, the "canonical" representtion would be:
 

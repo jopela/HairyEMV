@@ -5,6 +5,7 @@ COLORS = ['red','green','white']
 NBR_COLORS = len(COLORS)
 
 import argparse
+import util
 import sys
 
 from termcolor import colored
@@ -44,14 +45,14 @@ def main():
         return
 
     # xIAC
-    decline = rm(args.decline)
-    online = rm(args.online)
-    default = rm(args.default)
+    decline = util.rm(args.decline)
+    online = util.rm(args.online)
+    default = util.rm(args.default)
 
     valid_in = validate(decline, online, default)
 
     if not valid_in:
-        die("xIAC must all have the same length and be HEX values.")
+        util.die("xIAC must all have the same length and be HEX values.")
 
     print human(decline, online, default)
     return
@@ -60,7 +61,7 @@ def human(decline, online, default):
     """ Returns the human readable string for the given xIAC. """
 
     l = [decline,online,default]
-    unrolled = [unroll(xiac) for xiac in l]    
+    unrolled = [util.unroll(xiac) for xiac in l]    
 
     # The number of bits to display is the lenght of any of the unrolled
     # value.
@@ -84,37 +85,7 @@ def human(decline, online, default):
     result = "\n".join(lines)
     return result
 
-def rm(string):
-    """ Removes arbitraty spaces in strings and .
-    
-    Example
-    =============
-    >>> rm('aa    b c d')
-    'aabcd'
-    >>> rm('00 11 22 33')
-    '00112233'
-    """
-    return "".join([i for i in string if i != ' '])
 
-def unroll(xiac):
-    """ Takes an hex string and returns an equivalent binary representation
-    of the string.
-
-    Examples
-    =============
-    >>> unroll("FF")
-    '11111111'
-    >>> unroll("ABCD")
-    '1010101111001101'
-    >>> unroll("0a0a0a0a0a")
-    '0000101000001010000010100000101000001010'
-    """
-    size = len(xiac)
-    int_val = int(xiac,16)
-
-    nibble_size = 4
-
-    return bin(int_val)[2:].zfill(size*nibble_size)
 
 def validate(decline, online, default):
     """ Returns true if the decline, online and default command line parameters
@@ -145,10 +116,6 @@ def validate(decline, online, default):
     in_char_set = len(l.difference(CHAR_SET)) == 0
 
     return lengths_ok and in_char_set
-
-def die(msg):
-    sys.stderr.write(msg)
-    sys.exit(-1)
 
 if __name__ == "__main__":
     main()
