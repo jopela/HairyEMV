@@ -38,10 +38,8 @@ def main():
     args = parser.parse_args()
 
     if args.test:
-        print "running doctests. You will see a report for failed tests."
         import doctest
         doctest.testmod()
-        print "Done running doctests ... quitting."
         return
 
     # xIAC
@@ -85,8 +83,6 @@ def human(decline, online, default):
     result = "\n".join(lines)
     return result
 
-
-
 def validate(decline, online, default):
     """ Returns true if the decline, online and default command line parameters
     are well formated and usable and False if this is not the case.
@@ -94,7 +90,7 @@ def validate(decline, online, default):
     Examples
     ==============
     >>> validate("0000000000","0000000000","0000000000")
-    True
+    False
     >>> validate("0000000000","00","0000000000")
     False
     >>> validate("xxxxxxxxxx","0000000000","zzzzzzzzzz")

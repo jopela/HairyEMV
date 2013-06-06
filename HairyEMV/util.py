@@ -1,19 +1,11 @@
 #!/usr/bin/python2
 
-import doctest
-import argparse
-
-
-def main():
-    print "hello world"
-    return
-
 def unroll(xiac):
     """ Takes an hex string and returns an equivalent binary representation
-    of the string.
+    of the string, preserving the leading zeros.
 
-    Examples
-    =============
+    Example
+    =======
     >>> unroll("FF")
     '11111111'
     >>> unroll("ABCD")
@@ -32,7 +24,7 @@ def rm(string):
     """ Removes arbitraty spaces in strings and .
     
     Example
-    =============
+    =======
     >>> rm('aa    b c d')
     'aabcd'
     >>> rm('00 11 22 33')
@@ -45,3 +37,7 @@ def die(msg):
     status."""
     sys.stderr.write(msg+"\n")
     sys.exit(-1)
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
