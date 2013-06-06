@@ -43,9 +43,9 @@ def main():
         print "Done running doctests ... quitting."
         return
 
-    decline = args.decline
-    online = args.online
-    default = args.default
+    decline = rm(args.decline)
+    online = rm(args.online)
+    default = rm(args.default)
 
     valid_in = validate(decline, online, default)
 
@@ -54,8 +54,6 @@ def main():
 
     print human(decline, online, default)
     return
-
-
 
 def human(decline, online, default):
     """ Returns the human readable string for the given xIAC. """
