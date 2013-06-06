@@ -59,36 +59,15 @@ the values of the IAC tags shown above, the "canonical" representtion would be:
     2(0,0,0)
     1(0,0,0)
 
-each column represent the value of the bit for Denial, Online and Default IACs
-respectively. Bits in row are presented from most significant to least 
-significant bit.
+Each column represent the value of the bit for Denial, Online and Default IACs
+respectively. Bits in rows are presented from most significant to least 
+significant bit. This format allows for easy comparison with documentation
+that usually replicate this format for IAC values.
 
-Requirements
-============
+The need for human readable format for EMV parameter arises in many situations.
+IAC is an example among many other such as: CDOL, CVM lists, AIP, AFL etc. The
+goal of this module is to provide canonical printing for all of these values.
 
-The only external dependency is termcolor. If you have pip installed on your 
-system, just issue the following command:
-
-    pip install termcolor
-
-Usage
-=====
-
-example usage:
-
-    hairy.py bf0c00112433 ba0c00112233 de0c00512233  
-
-if you provide your xIAC in quotes, hairy.py will manage any spaces in the
-xIACs values making this:
-
-    hairy.py "bf 0c 00 11 24 33" ba0c00112233 de0c00512233  
-
-A valid invocation.
-
-TODO
-====
-
-1. Add support for xIAC comparison.
 
 Contact
 =======
