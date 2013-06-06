@@ -3,6 +3,7 @@
 CHAR_SET = set("0123456789abcdefABCDEF")
 
 import argparse
+import sys
 
 def main():
 
@@ -43,9 +44,39 @@ def main():
     online = args.online
     default = args.default
 
-    val_in = validate(decline, online, default)
+    valid_in = validate(decline, online, default)
+
+    if not valid_in:
+        die("xIAC must all have the same length and be HEX values.")
+
+    print human(decline, online, default)
 
     return
+
+def human():
+    """ returns the human readable string for the given xIAC. """
+    
+    return "loolll"
+
+def unroll(xiac):
+    """ takes an hex string and returns an equivalent binary representation
+    of the string.
+
+    Examples
+    =============
+    >>> unroll("FF")
+    '11111111'
+    >>> unroll("ABCD")
+    '1010101111001101'
+    >>> unroll("0a0a0a0a0a")
+    '0000101000001010000010100000101000001010'
+    """
+    size = len(xiac)
+    int_val = int(xiac,16)
+
+    nibble_size = 4
+
+    return bin(int_val)[2:].zfill(size*nibble_size)
 
 def validate(decline, online, default):
     """ Returns true if the decline, online and default command line parameters
@@ -65,7 +96,6 @@ def validate(decline, online, default):
     True
     >>> validate("q011223344","5566778899","aaBbffDdEE")
     False
-    
     """
 
     # All xIAC must have the same length.
@@ -77,6 +107,10 @@ def validate(decline, online, default):
     in_char_set = len(l.difference(CHAR_SET)) == 0
 
     return lengths_ok and in_char_set
+
+def die(msg):
+    sys.stderr.write(msg)
+    sys.exit(-1)
 
 if __name__ == "__main__":
     main()
