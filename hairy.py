@@ -1,10 +1,13 @@
 #!/usr/bin/python2
 
 CHAR_SET = set("0123456789abcdefABCDEF")
+COLORS = ['red','green','white']
+NBR_COLORS = len(COLORS)
 
 import argparse
 import sys
 
+from termcolor import colored
 def main():
 
     parser = argparse.ArgumentParser()
@@ -50,16 +53,52 @@ def main():
         die("xIAC must all have the same length and be HEX values.")
 
     print human(decline, online, default)
-
     return
 
-def human():
-    """ returns the human readable string for the given xIAC. """
+
+
+def human(decline, online, default):
+    """ Returns the human readable string for the given xIAC. """
+
+    l = [decline,online,default]
+    unrolled = [unroll(xiac) for xiac in l]    
+
+    # The number of bits to display is the lenght of any of the unrolled
+    # value.
+    nbr_bits = len(unrolled[0])
+
+    lines = [] 
+
+    for i in range(nbr_bits):
+        text = "{0}({1},{2},{3})".format(
+                (7 - (i % 8)) + 1, # index of the bit in the Byte.
+                unrolled[0][i],
+                unrolled[1][i],
+                unrolled[2][i])
+
+        # A different color is toggled for every bit to display modulo the
+        # number of color available.
+        ctext = colored(text, COLORS[(i / 8) % NBR_COLORS])
+
+        lines.append(ctext)
+
+    result = "\n".join(lines)
+    return result
+
+def rm(string):
+    """ Removes arbitraty spaces in strings and .
     
-    return "loolll"
+    Example
+    =============
+    >>> rm('aa    b c d')
+    'aabcd'
+    >>> rm('00 11 22 33')
+    '00112233'
+    """
+    return "".join([i for i in string if i != ' '])
 
 def unroll(xiac):
-    """ takes an hex string and returns an equivalent binary representation
+    """ Takes an hex string and returns an equivalent binary representation
     of the string.
 
     Examples
