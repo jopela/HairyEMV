@@ -1,9 +1,9 @@
 #!/usr/bin/python2
 
+import termcolor
 import argparse
 import doctest
 import util
-
 
 def main():
 
@@ -34,7 +34,26 @@ def main():
 
     valid_in = validate(afl)
 
+    if not valid_in:
+        util.die("A valid AFL value should be a multiple of 4 Bytes.")
+
     return
+
+def human(afl):
+    """ Returns the human readable string for the AFL. """
+
+    l = len(afl) / 8
+
+    result = ""
+    for f in range(l):
+        sfi = int(afl[0],16)
+        start_index = int(alf[1],16)
+        end_index = int(afl[2],16)
+        signed = int(afl[3],16)
+        text = "({0},{1},{2},{3})".format(sfi & 0xff)
+
+
+
 
 def validate(afl):
     """ Returns True is an AFL is valid on the basis of being a multiple
