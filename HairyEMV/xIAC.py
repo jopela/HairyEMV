@@ -57,30 +57,59 @@ def main():
 def human(decline, online, default):
     """ Returns the human readable string for the given xIAC. """
 
-    l = [decline,online,default]
-    unrolled = [util.unroll(xiac) for xiac in l]    
+    title = "Issuer Action Code (Tag:9F0E,9F0F,9F0D)."
 
-    # The number of bits to display is the lenght of any of the unrolled
-    # value.
-    nbr_bits = len(unrolled[0])
+    tmp = [util.unroll(decline), util.unroll(online), util.unroll(default)]
+    data = map(list, zip(*tmp))
 
-    lines = [] 
+    colums_header = ["dec", "onl", "def"]
 
-    for i in range(nbr_bits):
-        text = "{0}({1},{2},{3})".format(
-                (7 - (i % 8)) + 1, # index of the bit in the Byte.
-                unrolled[0][i],
-                unrolled[1][i],
-                unrolled[2][i])
+    # Issuer Action Code row headers.
+    rows_header_iac = [
+            "Offline data authentication not performed",
+            "SDA Failed",
+            "ICC data missing",
+            "Card appears on terminal exception file",
+            "DDA failed",
+            "CDA failed",
+            "RFU",
+            "RFU",
+            "ICC and terminal diff app versions",
+            "Expired application",
+            "Application not yet effective",
+            "Requested srvice not allowed ",
+            "New card",
+            "RFU",
+            "RFU",
+            "RFU",
+            "Cardholder verification not successful",
+            "Unrecognized CVM",
+            "PIN Try Limit exceeded",
+            "PIN required, pad not present/working",
+            "PIN required, pad present, PIN not entered",
+            "Online PIN entered",
+            "RFU",
+            "RFU",
+            "Transaction exceeds floor limit",
+            "Lower consecutive offline limit exceed",
+            "Upper consecutive offline limit exceeded",
+            "Transaction selected rand online processing",
+            "Merchant forced transaction online",
+            "RFU",
+            "RFU",
+            "RFU",
+            "Default TDOL used",
+            "Issuer authentication failed",
+            "Script failed before final GENERATE AC",
+            "Script failed after final GENERATE AC",
+            "RFU",
+            "RFU",
+            "RFU",
+            "RFU"
+            ]
 
-        # A different color is toggled for every bit to display modulo the
-        # number of color available.
-        ctext = colored(text, COLORS[(i / 8) % NBR_COLORS])
 
-        lines.append(ctext)
-
-    result = "\n".join(lines)
-    return result
+    return util.table(title, data, colums_header, rows_header_iac)
 
 def validate(decline, online, default):
     """ Returns true if the decline, online and default command line parameters
