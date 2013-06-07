@@ -63,7 +63,7 @@ def human(afl):
         afl = afl[8:]
 
 
-    return "".join(texts)
+    return "\n".join(texts)
 
 def validate(afl):
     """ Returns True is an AFL is valid on the basis of being a multiple
