@@ -32,6 +32,34 @@ def rm(string):
     """
     return "".join([i for i in string if i != ' '])
 
+def is_hex(s):
+    """ Returns true if s contains only hexadecimal symbols , that is, only
+    0-9 and a,b,c,d,e,f or A,B,C,D,E,F. Returns false otherwise.
+    
+    Example
+    =======
+    >>> is_hex('0x000a0a')
+    False
+    >>> is_hex('00112233445566778899aAbBcCdDeEfF')
+    True
+    >>> is_hex('001122gg')
+    False
+    >>> is_hex('')
+    False
+    >>> is_hex('     ')
+    False
+    >>> is_hex('  a b c d')
+    False
+    """
+
+    if len(s) == 0:
+        return False
+
+    char_set = set("0123456789abcdefABCDEF")
+    s_set = set(s)
+
+    return s_set.issubset(char_set)
+
 def die(msg):
     """Print a message on stderr and then exit with error
     status."""
