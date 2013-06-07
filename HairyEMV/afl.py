@@ -52,7 +52,6 @@ def human(afl):
         start_index = int(afl[2:4],16)
         end_index = int(afl[4:6],16)
         signed = int(afl[6:8],16)
-        print sfi, start_index, end_index, signed
         text = "({0},{1},{2},{3})".format((sfi & 0xf8) >> 3,
                 start_index,
                 end_index,
