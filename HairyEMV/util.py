@@ -1,5 +1,10 @@
 #!/usr/bin/python2
 
+# GLOBAL VARIABLES
+PAGE_WIDTH = 80     #page width of a report in char.
+
+import pandas
+
 def unroll(xiac):
     """ Takes an hex string and returns an equivalent binary representation
     of the string, preserving the leading zeros.
@@ -59,6 +64,30 @@ def is_hex(s):
     s_set = set(s)
 
     return s_set.issubset(char_set)
+
+def table(title, data, col_header, row_header):
+    """ Takes data and returns a string that displays it in a table with the
+    added metadata specified by title, col_header and row_header. """
+
+    # Build the table.
+    table_text = str(pandas.DataFrame(data,
+        index=row_header,
+        columns=col_header))
+
+    # Figure out the size of the actual table.
+    lines = table_text.splitlines()
+
+    # The size of the table is the largest line from the table itself
+    # or the size of the title.
+    lengths = [len(i) for i in lines]
+    lengths.append(len(title))
+    size = max(lengths)
+
+    # Make a proper title.
+    title_text = title.center(size) + "\n" + "#" * size + '\n'
+
+    # result is title_text + table_text
+    return title_text + table_text 
 
 def die(msg):
     """Print a message on stderr and then exit with error

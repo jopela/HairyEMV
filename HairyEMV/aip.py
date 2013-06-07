@@ -32,28 +32,51 @@ def main():
 
     valid_in = validate(args.AIP)
 
+    print human(args.AIP)
+
     return
 
 def validate(aip):
-    """ Returns True is an AFL is valid on the basis of being a multiple
-    of four bytes. 
+    """ Returns True is AIP is valid on the basis of having a lenght of
+    2 bytes hex coded values. 
 
     Example
     =======
 
-    >>> validate('08010201')
+    >>> validate('3900')
     True
-    >>> validate('0801020108010201')
+    >>> validate('1980')
     True
-    >>> validate('080102')
+    >>> validate('198g')
+    False
+    >>> validate('090')
+    False
+    >>> validate('00090')
     False
 
     """
 
-    return len(afl) % 8  == 0 and len(afl) >= 8
+    return len(aip) == 8 and util.is_hex()
 
-def human(afl):
-    """Returns a string that represent the human readable version of the 
+def human(aip):
+    """Returns a string that represent the human readable version of the ."""
+
+    title = "Application Interchange Profile (tag: 0x82)"
+    data =[[i] for i in util.unroll(aip)]
+    col_header = ["Value"]
+    row_header = [
+            "RFU",
+            "SDA supported",
+            "DDA supported",
+            "Cardholder verification is supported",
+            "Terminal risk management is to be performed",
+            "Issuer authentication is supported",
+            "RFU",
+            "CDA supported",
+            "Reserved for us by the EMV Contactless Specifications"
+            ] + ["RFU"] * 7
+
+    return util.table(title, data, col_header, row_header)
 
 if __name__ == "__main__":
     main()
