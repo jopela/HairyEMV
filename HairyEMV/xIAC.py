@@ -1,6 +1,5 @@
 #!/usr/bin/python2
 
-CHAR_SET = set("0123456789abcdefABCDEF")
 COLORS = ['red','green','white']
 NBR_COLORS = len(COLORS)
 
@@ -90,7 +89,7 @@ def validate(decline, online, default):
     Examples
     ==============
     >>> validate("0000000000","0000000000","0000000000")
-    False
+    True
     >>> validate("0000000000","00","0000000000")
     False
     >>> validate("xxxxxxxxxx","0000000000","zzzzzzzzzz")
@@ -108,10 +107,9 @@ def validate(decline, online, default):
     lengths_ok = len(set([len(i) for i in l])) == 1
 
     # ALL xIAC must be HEX values.
-    l = set(decline+online+default)
-    in_char_set = len(l.difference(CHAR_SET)) == 0
+    are_hex = util.is_hex(decline+online+default)
 
-    return lengths_ok and in_char_set
+    return lengths_ok and are_hex
 
 if __name__ == "__main__":
     main()
