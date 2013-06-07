@@ -2,6 +2,7 @@
 
 import argparse
 import doctest
+import pandas
 import util
 
 
@@ -9,10 +10,10 @@ def main():
 
     parser = argparse.ArgumentParser()
 
-    # parameter for the AFL.
+    # parameter for the AIP.
     parser.add_argument(
-            'AFL',
-            help='Application File Locator value (coded in hexadecimal).'
+            'AIP',
+            help='Application Interchange Profile (coded in hexadecimal).'
             )
 
     # doctest flag.
@@ -25,18 +26,15 @@ def main():
 
     args = parser.parse_args()
 
-    test = args.test
-    afl = args.AFL
-
     if args.test:
         doctest.testmod()
         return
 
-    valid_in = validate(afl)
+    valid_in = validate(args.AIP)
 
     return
 
-def validate(afl):
+def validate(aip):
     """ Returns True is an AFL is valid on the basis of being a multiple
     of four bytes. 
 
@@ -52,7 +50,10 @@ def validate(afl):
 
     """
 
-    return len(afl) % 8  == 0
+    return len(afl) % 8  == 0 and len(afl) >= 8
+
+def human(afl):
+    """Returns a string that represent the human readable version of the 
 
 if __name__ == "__main__":
     main()
