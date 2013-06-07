@@ -57,10 +57,11 @@ def main():
 def human(decline, online, default):
     """ Returns the human readable string for the given xIAC. """
 
-    title = "Issuer Action Code (Tag:9F0E,9F0F,9F0D)."
 
     tmp = [util.unroll(decline), util.unroll(online), util.unroll(default)]
     data = map(list, zip(*tmp))
+
+    size = len(tmp[0])
 
     colums_header = ["dec", "onl", "def"]
 
@@ -108,8 +109,47 @@ def human(decline, online, default):
             "RFU"
             ]
 
+    # Card Issuer Action Code row headers (MasterCard specific).
+    rows_header_ciac = [
+            "RFU",
+            "Unable to go online",
+            "Offline PIN verif Not Performed",
+            "Offline PIN Verification Failed",
+            "PIN Try Limit exceeded",
+            "International Transaction",
+            "Domestic Transaction",
+            "Terminal Wrongly Considers Off PIN OK",
+            "Lower Consecutive Offiline Limit Exceeded",
+            "Upper Consecutive Offiline Limit Exceeded",
+            "Lower Cumulative Offiline Limit Exceeded",
+            "Upper Cumulative Offiline Limit Exceeded",
+            "Go Online On Next Transaction Was Set",
+            "Issuer Authentication Failed",
+            "Script Received",
+            "Script Failed",
+            "RFU",
+            "RFU",
+            "RFU",
+            "RFU",
+            "RFU",
+            "RFU",
+            "Match Found in Additional Check Table",
+            "No Match Found In Additional Check Table"]
 
-    return util.table(title, data, colums_header, rows_header_iac)
+
+    # Select the right title and rows_header list.
+    if len(rows_header_iac) == size:
+        title = "Issuer Action Code (Tag:9F0E,9F0F,9F0D)."
+        rows = rows_header_iac
+    elif len(rows_header_ciac) == size:
+        title = "CARD Issuer Action Code (Tag:C3/CF,C5/CE,C4/CD)."
+        rows = rows_header_ciac
+        title
+    else:
+        rows = range(1,size+1)
+
+
+    return util.table(title, data, colums_header, rows)
 
 def validate(decline, online, default):
     """ Returns true if the decline, online and default command line parameters
