@@ -4,6 +4,7 @@
 PAGE_WIDTH = 80     #page width of a report in char.
 
 import pandas
+import sys
 
 def unroll(xiac):
     """ Takes an hex string and returns an equivalent binary representation
