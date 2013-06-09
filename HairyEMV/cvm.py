@@ -67,7 +67,7 @@ def human(cvm):
     """Returns a string that represent the human readable version of the
     CVM list."""
 
-    title = "Cardholder Method Verification list (tag:0x8E)"
+    title = "Cardholder Verification Method list (tag:0x8E)"
     
     # for a valid CVM list, the first 4 bytes are reserved for the amounts.
     amounts = cvm[:8]
@@ -100,7 +100,8 @@ def human(cvm):
     col_header = ["Value","Method","Fail", "condition"]
     row_header= orders
 
-    return util.table(title, data, col_header, row_header)  
+    return util.table(title, data, col_header, row_header) +"\n" +\
+    "Amount X:{0}\nAmount Y:{1}".format(int(amounts[:4],16),int(amounts[4:],16)) 
 
 def method(cvm):
     """ Takes a cvm and return a string description of the method associated

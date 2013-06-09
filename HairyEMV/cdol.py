@@ -9,9 +9,9 @@ def main():
 
     parser = argparse.ArgumentParser()
 
-    # parameter for the AFL.
+    # parameter for the CDOL.
     parser.add_argument(
-            'AFL',
+            'CDOL',
             help='Application File Locator value (coded in hexadecimal).'
             )
 
