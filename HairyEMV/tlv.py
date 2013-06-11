@@ -89,9 +89,45 @@ def children(tlv):
 
     return "please implement me"
 
-def human(tlv):
-    """ Returns the human readable string for the TLV input. """
-    return "human:plese implement me"
+def human(tlv,depth=0,indent=2):
+    """ Returns the human readable string for the TLV input.
+    
+    Example
+    =======
+
+    >>> human('6f20840e315041592e5359532e4444463031a50e8801015f2d046672656e9f110101')
+    6F - [32]
+      82 - [14] - 315041592E5359532E4444463031
+      A5 - [14]
+        88 - [1] - 01
+        5F2D - [4] - 6672656E
+        9F11 - [1] - 01
+    """
+    # String format used to print.
+    basic_format = "{0}{1} - [{2}]"
+    primitive_format = basic_format + " - {3}"
+    f = lambda x : ' ' * indent * x
+    
+    # These are printed in the base case as well as in the recursive case.
+    t = tag(tlv)
+    l = length(tlv)
+
+    # Base case.
+    if primitive(tlv):
+        v = value(tlv)
+        return primitive_format.format(f(depth),t,l,v)
+
+    # Recursive definition.
+    lines = [basic_format.format(f(depth), t, l)]
+    new_depth = depth + 1
+    for c in children(tlv):
+        lines.append(human(c,new_depth))
+
+    return "\n".join(lines)
+
+
+def primitive(tlv):
+    """ Takes a 
 
 if __name__ == "__main__":
     main()
