@@ -58,7 +58,6 @@ def tail(tlv):
 
     >>> tail('840E315041592E5359532E4444463031A50E8801015F2D046672656E9F110101')
     'A50E8801015F2D046672656E9F110101'
-    ''
     
     """
     return "please implement me!"
@@ -88,6 +87,55 @@ def children(tlv):
     """
 
     return "please implement me"
+
+def primitive(tlv):
+    """ Takes a ber-tlv encoded object and returns True if it is a primitive
+    object. Returns false if it is constructed. 
+    
+    Example
+    =======
+
+    >>> primitive('6f20840e315041592e5359532e4444463031a50e8801015f2d046672656e9f110101')
+    False
+    >>> primitive('9f110101')
+    True
+    """
+
+    return True
+
+def tag(tlv):
+    """ Returns the first tag value found in the ber-tlv encoded object. 
+    
+    Example
+    =======
+
+    >>> tag('9f110101')
+    '9f11'
+    >>> tag('840e315041592e5359532e4444463031')
+    '84'
+    >>> tag('a50e8801015f2d046672656e9f110101')
+    'a5'
+    """
+
+    return 'a5'
+
+def length(tlv):
+    """ Returns the first lenght field found in the ber-tlv encoded object.
+    
+    Example
+    =======
+
+    >>> tag('9f110101')
+    '01'
+    >>> tag('840e315041592e5359532e4444463031')
+    '0e'
+    >>> tag('a50e8801015f2d046672656e9f110101')
+    '0e'
+    
+    """
+
+    return '0e'
+
 
 def human(tlv,depth=0,indent=2):
     """ Returns the human readable string for the TLV input.
