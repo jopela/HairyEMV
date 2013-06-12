@@ -101,7 +101,9 @@ def primitive(tlv):
     True
     """
 
-    return True
+    b = int(tlv[0],16)
+    
+    return (b & 2) == 0
 
 def tag(tlv):
     """ Returns the first tag value found in the ber-tlv encoded object. 
@@ -133,9 +135,21 @@ def length(tlv):
     '0e'
     
     """
-
     return '0e'
 
+def value(tlv):
+    """ Return the value field of a ber-tlv encoded object.
+
+    Example
+    =======
+
+    >>> value('9f110101')
+    '01'
+    >>> value('840e315041592e5359532e4444463031')
+    '315041592e5359532e4444463031'
+
+    """
+    return '01'
 
 def human(tlv,depth=0,indent=2):
     """ Returns the human readable string for the TLV input.
@@ -154,6 +168,7 @@ def human(tlv,depth=0,indent=2):
     # String format used to print.
     basic_format = "{0}{1} - [{2}]"
     primitive_format = basic_format + " - {3}"
+    # shortcut for getting the right indentation depending on the depth.
     f = lambda x : ' ' * indent * x
     
     # These are printed in the base case as well as in the recursive case.
@@ -172,10 +187,6 @@ def human(tlv,depth=0,indent=2):
         lines.append(human(c,new_depth))
 
     return "\n".join(lines)
-
-
-def primitive(tlv):
-    """ Takes a 
 
 if __name__ == "__main__":
     main()
