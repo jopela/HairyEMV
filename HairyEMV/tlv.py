@@ -27,10 +27,34 @@ def main():
     if args.test:
         doctest.testmod()
         return
+    
+    if not validate(args.TLV):
+        util.die("A valid TLV value must be encoded in HEX and be an integer"\
+                "multiple of Bytes greater then 0")
+
 
     print human(args.TLV)
 
     return
+
+def validate(tlv):
+    """ Validate a ber-tlv encoded string on the basis that it's made up only
+    of HEX symbol and that it is made up of bytes (even length).
+
+    Example
+    =======
+    >>> validate('9f110101')
+    True
+    >>> validate('840E315041592E5359532E4444463031')
+    True
+    >>> validate('')
+    False
+    >>> validate('0x9f110101')
+    False
+
+    """
+
+    return (len(tlv) % 2 == 0) and util.is_hex(tlv)
 
 def head(tlv):
     """ Takes a string containing one or more composite or primitive

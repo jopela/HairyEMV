@@ -32,6 +32,9 @@ def main():
 
     valid_in = validate(args.AIP)
 
+    if not valid_in:
+        util.die("a valid AIP has a lenght of 2 Bytes and is code in HEX")
+
     print human(args.AIP)
 
     return
