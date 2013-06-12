@@ -56,6 +56,7 @@ def validate(tlv):
 
     return (len(tlv) % 2 == 0) and util.is_hex(tlv)
 
+# TODO: what should head return when tlv values are incorrect?
 def head(tlv):
     """ Takes a string containing one or more composite or primitive
     ber-tlv encoded object and returns the first Tag-Lenght-Value triad
@@ -66,11 +67,13 @@ def head(tlv):
 
     >>> head('840E315041592E5359532E4444463031A50E8801015F2D046672656E9F110101') 
     '840E315041592E5359532E4444463031'
-    >>> head('840')
-    ''
     
     """
-    return "please implement me !"
+    t = tag(tlv)
+    l = length(tlv)
+    v = value(tlv)
+
+    return t+l+v
 
 def tail(tlv):
     """ Takes a string containing one or more composite or primitive ber-tlv
@@ -84,7 +87,11 @@ def tail(tlv):
     'A50E8801015F2D046672656E9F110101'
     
     """
-    return "please implement me!"
+
+    # tail is list minus the slice of head.
+    h = head(tlv)
+
+    return tlv[len(h):]
 
 def find(tag, tlv):
     """ Takes tlv and search for tag, returning the Tag-Length-Value triad
@@ -106,14 +113,25 @@ def children(tlv):
     =======
 
     >>> children('6f20840e315041592e5359532e4444463031a50e8801015f2d046672656e9f110101')
-    '["840e315041592e5359532e4444463031a50e8801015f2d046672656e9f110101"]'
+    ['840e315041592e5359532e4444463031', 'a50e8801015f2d046672656e9f110101']
     >>> children('a50e8801015f2d046672656e9f110101')
-    '["880101","5f2d046672656e","9f110101"]'
+    ['880101', '5f2d046672656e', '9f110101']
     >>> children('9f110101')
-    '[]'
+    []
 
     """
-    return "please implement me"
+
+    childs = []
+    if primitive(tlv):
+        return childs
+
+    v = value(tlv)
+
+    while v:
+        childs.append(head(v))
+        v = tail(v)
+
+    return childs
 
 def primitive(tlv):
     """ Takes a ber-tlv encoded object and returns True if it is a primitive
@@ -240,13 +258,10 @@ def human(tlv,depth=0,indent=2):
     Example
     =======
 
-    >>> human('6f20840e315041592e5359532e4444463031a50e8801015f2d046672656e9f110101')
-    6F - [32]
-      82 - [14] - 315041592E5359532E4444463031
-      A5 - [14]
-        88 - [1] - 01
-        5F2D - [4] - 6672656E
-        9F11 - [1] - 01
+    #TODO: find a way to test this? 
+    #>>> human('6f20840e315041592e5359532e4444463031a50e8801015f2d046672656e9f110101')
+    #'6f - [32]\n  84 - [14] - 315041592e5359532e4444463031\n  a5 - [14]\n    88 - [1] - 01\n    5f2d - [4] - 6672656e\n    9f11 - [1] - 01'
+    
     """
     # String format used to print.
     basic_format = "{0}{1} - [{2}]"
