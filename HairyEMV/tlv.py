@@ -106,10 +106,13 @@ def children(tlv):
     =======
 
     >>> children('6f20840e315041592e5359532e4444463031a50e8801015f2d046672656e9f110101')
-    '840e315041592e5359532e4444463031a50e8801015f2d046672656e9f110101'
+    '["840e315041592e5359532e4444463031a50e8801015f2d046672656e9f110101"]'
+    >>> children('a50e8801015f2d046672656e9f110101')
+    '["880101","5f2d046672656e","9f110101"]'
+    >>> children('9f110101')
+    '[]'
 
     """
-
     return "please implement me"
 
 def primitive(tlv):
@@ -194,6 +197,8 @@ def length(tlv):
 
     return notag[0:nbr_bytes*2]
 
+# TODO: this function is HARD to read ... add comments or refactor into
+# cleaner code.
 def value(tlv):
     """ Return the value field of a ber-tlv encoded object. If the string 
     contains 2 primitive object, returns the value of the first one.
