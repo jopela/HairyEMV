@@ -143,26 +143,60 @@ def tag(tlv):
     'a5'
     """
 
-    return 'a5'
+    # A tag always include at least 1 byte.
+    t = tlv[0:2]
 
+    bin_t = int(t, 16)
+    sub_mask_1 = 0x1F
+    sub_mask_2 = 0x80
+
+    # More bytes follow if & result with sub_mask_1 == sub_mask_1
+    if (bin_t & sub_mask_1) == sub_mask_1:
+        while True:
+            temp = tlv[len(t):len(t)+2]
+            t += temp
+            bin_temp = int(temp, 16)
+            # Even more by follow if the current msb of the Byte is 1
+            if (bin_temp & sub_mask_2 == 0):
+                return t
+    else:
+        return t
+
+# TODO: add test for case of more than 1 bytes for length tag.
 def length(tlv):
     """ Returns the first lenght field found in the ber-tlv encoded object.
     
     Example
     =======
 
-    >>> tag('9f110101')
+    >>> length('9f110101')
     '01'
-    >>> tag('840e315041592e5359532e4444463031')
+    >>> length('840e315041592e5359532e4444463031')
     '0e'
-    >>> tag('a50e8801015f2d046672656e9f110101')
+    >>> length('a50e8801015f2d046672656e9f110101')
     '0e'
     
     """
-    return '0e'
+    
+    # get rid of the tag first.
+    l = len(tag(tlv))
+
+    notag = tlv[l:]
+
+    b_bit = int(notag[0:2],16)
+    sub_mask = 0x80
+    nbr_bytes = 0
+
+    if b_bit & sub_mask:
+        nbr_bytes = 0x7F & b_bit
+    else:
+        nbr_bytes = 1
+
+    return notag[0:nbr_bytes*2]
 
 def value(tlv):
-    """ Return the value field of a ber-tlv encoded object.
+    """ Return the value field of a ber-tlv encoded object. If the string 
+    contains 2 primitive object, returns the value of the first one.
 
     Example
     =======
@@ -171,9 +205,29 @@ def value(tlv):
     '01'
     >>> value('840e315041592e5359532e4444463031')
     '315041592e5359532e4444463031'
+    >>> value('840e315041592e5359532e4444463031a50e8801015f2d046672656e9f110101')
+    '315041592e5359532e4444463031'
 
     """
-    return '01'
+
+    # Retrieve the tag field of the object.
+    tag_field = tag(tlv)
+
+    # Retrieve the length field from the object.
+    len_field = length(tlv)
+
+    # Compute the real length.
+    l_bit = int(len_field[0:2],16) 
+    real_len = 0
+    if l_bit & 0x80:
+        real_len = int(len_field[2: 2 + (l_bit & 0x7F) * 2]) 
+    else:
+        real_len = l_bit * 2
+
+    # combined length of tag + length fields
+    combined = len(tag_field+len_field)
+    
+    return tlv[combined:combined+real_len] 
 
 def human(tlv,depth=0,indent=2):
     """ Returns the human readable string for the TLV input.
@@ -197,7 +251,7 @@ def human(tlv,depth=0,indent=2):
     
     # These are printed in the base case as well as in the recursive case.
     t = tag(tlv)
-    l = length(tlv)
+    l = int(length(tlv),16)
 
     # Base case.
     if primitive(tlv):
