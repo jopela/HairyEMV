@@ -46,7 +46,7 @@ def validate(cvm):
     Example
     =======
 
-    >>> validate('000000004103')
+    >>> validate('00000000000000004103')
     True
     >>> validate('0000010141035e03')
     True

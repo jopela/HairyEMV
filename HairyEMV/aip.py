@@ -59,7 +59,7 @@ def validate(aip):
 
     """
 
-    return len(aip) == 8 and util.is_hex()
+    return len(aip) == 4 and util.is_hex(aip)
 
 def human(aip):
     """Returns a string that represent the human readable version of the ."""
