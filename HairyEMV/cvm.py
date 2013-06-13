@@ -32,8 +32,8 @@ def main():
     valid_in = validate(args.CVM)
 
     if not valid_in:
-        util.die("CVM list must contain 4 bytes for amount x and y and at least"\
-                "2 bytes for one CVM")
+        util.die("CVM list must contain 8 bytes for amount x and y and at least"\
+                " 2 bytes for one CVM")
 
     print human(args.CVM)
     return
@@ -48,7 +48,7 @@ def validate(cvm):
 
     >>> validate('00000000000000004103')
     True
-    >>> validate('0000010141035e03')
+    >>> validate('000000000000010141035e03')
     True
     >>> validate('0000004103')
     False
@@ -69,11 +69,11 @@ def human(cvm):
 
     title = "Cardholder Verification Method list (tag:0x8E)"
     
-    # for a valid CVM list, the first 4 bytes are reserved for the amounts.
-    amounts = cvm[:8]
+    # for a valid CVM list, the first 8 bytes are reserved for the amounts.
+    amounts = cvm[:16]
 
     # card verification methods.
-    cvms = cvm[8:]
+    cvms = cvm[16:]
 
     # each CVM is 4 nibbles long.
     nbr_cvms = len(cvms) / 4
