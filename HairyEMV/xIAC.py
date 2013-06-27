@@ -100,12 +100,18 @@ def human(decline, online, default):
     online_col = util.unroll(online)
     default_col = util.unroll(default)
 
-    tmp = [decline_col, online_col, default_col]
+    bit_per_bytes = 8
+    nbr_bytes = len(default_col) / bit_per_bytes
+
+    byte_col = bytelist(nbr_bytes)
+    bit_col = bitlist(nbr_bytes)
+
+    tmp = [byte_col,bit_col,decline_col, online_col, default_col]
     data = map(list, zip(*tmp))
 
     size = len(tmp[0])
 
-    colums_header = ["dec", "onl", "def"]
+    colums_header = ["byte","bit","dec", "onl", "def"]
 
     # Issuer Action Code row headers.
     rows_header_iac = [
