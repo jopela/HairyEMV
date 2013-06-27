@@ -54,6 +54,22 @@ def main():
     print human(decline, online, default)
     return
 
+def bitlist(size):
+    """ Returns a bit list to be displayed as a Bit column in the data table.
+    
+    Example
+    =======
+
+    >>> bitlist(2)
+    [8, 7, 6, 5, 4, 3, 2, 1, 8, 7, 6, 5, 4, 3, 2, 1]
+    
+    """
+
+    bit_per_byte = 8
+    atom = range(8,0,-1)
+
+    return atom * size
+
 def bytelist(size):
     """ Returns a Byte list to be displayed as a Byte column in the data table.
 
