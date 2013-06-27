@@ -54,11 +54,37 @@ def main():
     print human(decline, online, default)
     return
 
+def bytelist(size):
+    """ Returns a Byte list to be displayed as a Byte column in the data table.
+
+    Example
+    =======
+
+    >>> bytelist(2)
+    ['1', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '2', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+
+    """
+
+    space = " "
+    bit_per_byte = 8
+    result = []
+    for i in range(size*bit_per_byte):
+        if i % bit_per_byte == 0:
+            placeholder = str(i/bit_per_byte + 1)
+            result.append(placeholder)
+        else:
+            result.append(space)
+        
+    return result
+
 def human(decline, online, default):
     """ Returns the human readable string for the given xIAC. """
 
+    decline_col = util.unroll(decline)
+    online_col = util.unroll(online)
+    default_col = util.unroll(default)
 
-    tmp = [util.unroll(decline), util.unroll(online), util.unroll(default)]
+    tmp = [decline_col, online_col, default_col]
     data = map(list, zip(*tmp))
 
     size = len(tmp[0])
