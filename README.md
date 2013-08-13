@@ -72,8 +72,7 @@ goal of this module is to provide canonical printing for all of these values.
 Contact
 =======
 
-If you have any questions/comments or, better, if you have a very HIGH paying
-job in the banking industry, please contact me at jonathan.pelletier1@gmail.com
+If you have any questions/comments please contact me at jonathan.pelletier1@gmail.com
 
 
 
